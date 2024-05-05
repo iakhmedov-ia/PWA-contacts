@@ -7,20 +7,20 @@ db.enablePersistence().catch(err => {
     }
 )
 
-//real-time listener
-db.collection('contacts').onSnapshot((snapshot)=> {
-  snapshot.dotChanges().forEach(change => {
-    if(change.type === 'added') {
-      renderContact(change.doc.data(), change.doc.id)
-    }
-    if(change.type === 'removed') {
-      removeContact(change.doc.id)
-    }
+// Real-time listener for changes in the 'contacts' collection
+db.collection('contacts').onSnapshot(snapshot => {
+  snapshot.docChanges().forEach(change => {
+      if (change.type === 'added') {
+          renderContact(change.doc.data(), change.doc.id);
+      }
+      if (change.type === 'removed') {
+          removeContact(change.doc.id)
+      }
   })
 })
 
 
-// add new contact
+/// add new contact
 const form = document.querySelector('form')
 
 form.addEventListener('submit', event => {
@@ -49,3 +49,5 @@ contactContainer.addEventListener('click', event => {
     db.collection('contacts').doc(id).delete()
   }
 })
+
+
